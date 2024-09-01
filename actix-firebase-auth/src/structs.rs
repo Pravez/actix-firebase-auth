@@ -1,5 +1,5 @@
 use std::time::Duration;
-
+use apistos::ApiSecurity;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
@@ -26,6 +26,26 @@ pub struct JwkKey {
 
 /// The Jwt claims decoded from the user token. Can also be viewed as the Firebase User
 /// information.
+#[cfg(feature = "apistos")]
+#[derive(Serialize, Deserialize, Clone, ApiSecurity)]
+#[openapi_security(scheme(security_type(http(scheme = "bearer", bearer_format = "JWT"))))]
+pub struct FirebaseUser {
+    pub iss: String,
+    pub aud: String,
+    pub sub: String,
+    pub iat: u64,
+    pub exp: u64,
+    pub auth_time: u64,
+    pub user_id: String,
+    pub provider_id: Option<String>,
+    pub name: Option<String>,
+    pub picture: Option<String>,
+    pub email: Option<String>,
+    pub email_verified: Option<bool>,
+    pub firebase: FirebaseProvider,
+}
+
+#[cfg(not(feature = "apistos"))]
 #[derive(Serialize, Deserialize, Clone)]
 pub struct FirebaseUser {
     pub iss: String,
@@ -42,6 +62,7 @@ pub struct FirebaseUser {
     pub email_verified: Option<bool>,
     pub firebase: FirebaseProvider,
 }
+
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct FirebaseProvider {

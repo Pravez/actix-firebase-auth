@@ -1,5 +1,5 @@
 [workspace]
-members = ["firebase-auth", "examples/*"]
-default-members = ["firebase-auth"]
+members = ["actix-firebase-auth", "examples/*"]
+default-members = ["actix-firebase-auth"]
 resolver = "2"
 
